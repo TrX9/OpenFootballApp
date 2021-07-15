@@ -1,0 +1,54 @@
+<h1>Football Teams Data</h1>
+<p>Welcome to Football teams data application</p>
+<div>
+  <form [formGroup]="teamsForm" (ngSubmit)="onSubmit(teamsForm.value)">
+
+    <div>
+      <span>
+        <label for="name" style="font-style:inherit;border-radius: 12px;">
+          Country Name:
+        </label>
+      </span>
+      <input id="name" type="text" style="border-radius: 12px;color:black;" formControlName="name">
+
+
+      <button class="button button4" type="submit">Submit</button>
+    </div>
+  </form>
+</div>
+<table class='table table-active' aria-labelledby="tableLabel" *ngIf="footballs" style=" color: white">
+  <thead>
+    <tr>
+      <th (click)="sort('name')" style="cursor: pointer;">
+        Team Name
+        <span class="glyphicon sort-icon" *ngIf="key =='name'" [ngClass]="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+      </th>
+      <th (click)="sort('founded')" style="cursor: pointer;">
+        Founded In
+        <span class="glyphicon sort-icon" *ngIf="key =='founded'" [ngClass]="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+      </th>
+      <th>Logo</th>
+      <th (click)="sort('venueName')" style="cursor: pointer;">Venue Name
+        <span class="glyphicon sort-icon" *ngIf="key =='venueName'" [ngClass]="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+      </th>
+      <th (click)="sort('city')"style="cursor: pointer;">
+        City
+        <span class="glyphicon sort-icon" *ngIf="key =='city'" [ngClass]="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let football of footballs | orderBy: key : reverse | paginate: {itemsPerPage: 10,
+                                                      currentPage: p,
+                                                      totalItems: total }">
+      <td>{{ football.name }}</td>
+      <td>{{ football.founded }}</td>
+      <td><img [attr.src]="football.logo" width="25" height="25" /></td>
+      <td>{{ football.venueName }}</td>
+      <td>{{ football.city }}</td>
+    </tr>
+  </tbody>
+</table>
+<div *ngIf="footballs" style=" background: white; padding-left:25%">
+  <pagination-controls style="color: white" (pageChange)="p = $event"></pagination-controls>
+</div>
